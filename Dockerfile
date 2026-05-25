@@ -18,10 +18,14 @@ RUN echo "set linenumbers" >> /root/.nanorc && \
     echo "set stateflags" >> /root/.nanorc && \
     echo "set constantshow" >> /root/.nanorc
 
-# 3. Permanently wire the custom volume binary path to the global system environment
+# 3. Permanently route the executable path to the volume folder
 ENV PATH="/data/bin:${PATH}"
 
-# We set the working directory to your persistent volume so your workspace is clean and permanent
+# 4. REDIRECT CONFIGS TO PERSISTENT VOLUME
+ENV XDG_CONFIG_HOME="/data/.config"
+ENV HOME="/data"
+
+# Set the active landing hub to the persistent volume drive
 WORKDIR /data
 
 CMD ["sleep", "infinity"]

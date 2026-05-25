@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Inject custom nano formatting configurations directly into the base image
+# 2. Inject your custom nano preferences permanently into the image OS layer
 RUN echo "set linenumbers" >> /root/.nanorc && \
     echo "set softwrap" >> /root/.nanorc && \
     echo "set tabsize 2" >> /root/.nanorc && \
@@ -18,15 +18,10 @@ RUN echo "set linenumbers" >> /root/.nanorc && \
     echo "set stateflags" >> /root/.nanorc && \
     echo "set constantshow" >> /root/.nanorc
 
-# 3. Permanently route the executable path to the volume folder
-ENV PATH="/data/bin:${PATH}"
+# 3. Download and install the Antigravity CLI straight into a safe system binary folder
+RUN curl -fsSL https://antigravity.google/cli/install.sh | bash -s -- --dir /usr/local/bin
 
-# 4. REDIRECT CONFIGS TO PERSISTENT VOLUME
-ENV XDG_CONFIG_HOME="/data/.config"
-ENV HOME="/data"
-
-# Set the active landing hub to the persistent volume drive
-WORKDIR /data
+# 4. Set the landing hub to your persistent app data workspace
+WORKDIR /app/data
 
 CMD ["sleep", "infinity"]
-
